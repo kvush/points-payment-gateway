@@ -9,7 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * UserController accepts several actions for show all users, login and open transfer history
+ * UserController handle user's private account.
  */
 class UserController extends Controller
 {

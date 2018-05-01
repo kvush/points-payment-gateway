@@ -50,13 +50,18 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         ];
     }
 
+    /**
+     * Useful method which return safe (htmlspecialchars) user name with string's first character uppercase
+     *
+     * @return string
+     */
     public function getSafeName()
     {
         return ucfirst(Html::encode($this->name));
     }
 
     /**
-     * Finds user by username and create new user if not exist
+     * Finds user by username or create new user if it does not exist
      *
      * @param string $username
      * @return static
@@ -130,7 +135,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getAuthKey()
     {
-        return '';
+        return ''; //do not need it now.
     }
 
     /**
@@ -144,6 +149,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      * @see getAuthKey()
      */
     public function validateAuthKey($authKey) {
-        return false;
+        return false; //do not need it now.
     }
 }

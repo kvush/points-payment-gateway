@@ -54,10 +54,6 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
         ];
     }
 
@@ -111,6 +107,8 @@ class SiteController extends Controller
     }
 
     /**
+     * Open send form, and handle form submitting - make points transfer
+     *
      * @return string|Response
      */
     public function actionSend()

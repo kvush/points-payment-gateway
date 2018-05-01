@@ -6,10 +6,7 @@ use Yii;
 use yii\base\Model;
 
 /**
- * LoginForm is the model behind the login form.
- *
- * @property User|null $user This property is read-only.
- *
+ * SendForm is the model behind the send points form.
  */
 class SendForm extends Model
 {
@@ -34,7 +31,7 @@ class SendForm extends Model
     }
 
     /**
-     * Check that user do not send points to his self
+     * Check that the user do not send points to his self
      *
      * @param $attribute
      * @param $params
@@ -50,7 +47,7 @@ class SendForm extends Model
     }
 
     /**
-     * Check current users balance before send points.
+     * Check the current users balance before send points.
      *
      * @param $attribute
      * @param $params
@@ -60,16 +57,17 @@ class SendForm extends Model
         if (Yii::$app->user->isGuest) {
             $this->addError($attribute, 'You must be authorized first');
         }
-        $balance = (int)User::findOrCreateByUsername(Yii::$app->user->identity->name)->balance;
-        if (($balance - (int)$this->$attribute) <= -1000) {
+        $balance = User::findOrCreateByUsername(Yii::$app->user->identity->name)->balance;
+        if (($balance - $this->$attribute) < -1000) {
             $available = $balance + 1000;
             $this->addError($attribute, "Your balance to low, maximum you can send is: $available point");
         }
     }
 
     /**
-     * Logs in a user using the provided username and password.
-     * @return bool whether the user is logged in successfully
+     * Validating the form and if it's ok, then making the transaction which update user's balances and add new row in transfer table
+     *
+     * @return bool whether the everything is ok
      */
     function makeTransfer()
     {
@@ -83,11 +81,11 @@ class SendForm extends Model
                 $transfer->save();
 
                 $user = User::findOne($transfer->id_from);
-                $user->balance = 0.00 + $user->balance - $transfer->amount;
+                $user->balance = $user->balance - $transfer->amount;
                 $user->save();
 
                 $user = User::findOne($transfer->id_to);
-                $user->balance = 0.00 + $user->balance + $transfer->amount;
+                $user->balance = $user->balance + $transfer->amount;
                 $user->save();
 
                 $transaction->commit();
