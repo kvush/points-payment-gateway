@@ -4,14 +4,15 @@
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\LoginForm */
 
-use yii\helpers\Html;
+
+use app\ext\Html;
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Send points';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-send">
-    <h1><?= Html::encode($this->title) ?> <small>from <?=Yii::$app->user->identity->safename?></small></h1>
+    <h1><?= Html::encode($this->title) ?> <small>from <?=Html::ucfirstEncode(Yii::$app->user->identity->name)?></small></h1>
 
     <?php $form = ActiveForm::begin([
         'id' => 'send-form',

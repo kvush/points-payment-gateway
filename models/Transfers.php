@@ -32,4 +32,24 @@ class Transfers extends \yii\db\ActiveRecord
             [['amount'], 'number'],
         ];
     }
+
+    /**
+     * Get users who get this payment
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPaymentReceivers()
+    {
+        return $this->hasOne(User::class, ['id' => 'id_to']);
+    }
+
+    /**
+     * Get user who make this payment
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPaymentSender()
+    {
+        return $this->hasOne(User::class, ['id' => 'id_from']);
+    }
 }

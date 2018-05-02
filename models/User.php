@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use yii\helpers\Html;
+
 use yii\web\IdentityInterface;
 
 
@@ -10,7 +10,7 @@ use yii\web\IdentityInterface;
  * This is the model class for table "user".
  *
  * @property int $id
- * @property string $safename safety property, do not use name, use only it instead.
+ * @property string $name
  * @property string $balance
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
@@ -51,13 +51,23 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Useful method which return safe (htmlspecialchars) user name with string's first character uppercase
+     * Get all transaction where user make payment (outgoing)
      *
-     * @return string
+     * @return \yii\db\ActiveQuery
      */
-    public function getSafeName()
+    public function getPaymentsTransactions()
     {
-        return ucfirst(Html::encode($this->name));
+        return $this->hasMany(Transfers::class, ['id_from' => 'id']);
+    }
+
+    /**
+     * Get all transaction where user receive payment (incoming)
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIncomingTransactions()
+    {
+        return $this->hasMany(Transfers::class, ['id_to' => 'id']);
     }
 
     /**

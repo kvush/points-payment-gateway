@@ -3,8 +3,8 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use app\ext\Html;
 use app\widgets\Alert;
-use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
@@ -40,13 +40,14 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Send points', 'url' => ['/site/send'], 'visible' => !Yii::$app->user->isGuest],
+            ['label' => 'Personal account', 'url' => ['/user/view', 'id' => Yii::$app->user->id], 'visible' => !Yii::$app->user->isGuest],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->safename . ')',
+                    'Logout (' . Html::ucfirstEncode(Yii::$app->user->identity->name) . ')',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()

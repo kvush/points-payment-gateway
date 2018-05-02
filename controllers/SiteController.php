@@ -66,6 +66,9 @@ class SiteController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => User::find(),
+            'pagination' => [
+                'pageSize' => 8,
+            ],
         ]);
 
         return $this->render('index', [

@@ -9,7 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * UserController handle user's private account.
+ * UserController handle user's private account
  */
 class UserController extends Controller
 {
@@ -30,13 +30,20 @@ class UserController extends Controller
     /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
+     *
      * @param integer $id
-     * @return User the loaded model
+     *
+     * @return \yii\db\ActiveRecord
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
+        $model = User::find()
+            ->with('paymentsTransactions.paymentReceivers', 'incomingTransactions.paymentSender')
+            ->where(['user.id' => $id])
+            ->one();
+
+        if ($model !== null) {
             return $model;
         }
 
