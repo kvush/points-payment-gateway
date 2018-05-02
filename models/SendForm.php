@@ -41,7 +41,7 @@ class SendForm extends Model
         if (Yii::$app->user->isGuest) {
             $this->addError($attribute, 'You must be authorized first');
         }
-        if (strcasecmp(Yii::$app->user->identity->name, $this->$attribute) == 0) {
+        else if (strcasecmp(Yii::$app->user->identity->name, $this->$attribute) == 0) {
             $this->addError($attribute, 'You can\'t send money to your self');
         }
     }
@@ -57,10 +57,12 @@ class SendForm extends Model
         if (Yii::$app->user->isGuest) {
             $this->addError($attribute, 'You must be authorized first');
         }
-        $balance = User::findOrCreateByUsername(Yii::$app->user->identity->name)->balance;
-        if (($balance - $this->$attribute) < -1000) {
-            $available = $balance + 1000;
-            $this->addError($attribute, "Your balance to low, maximum you can send is: $available point");
+        else {
+            $balance = User::findOrCreateByUsername(Yii::$app->user->identity->name)->balance;
+            if (($balance - $this->$attribute) < -1000) {
+                $available = $balance + 1000;
+                $this->addError($attribute, "Your balance to low, maximum you can send is: $available point");
+            }
         }
     }
 

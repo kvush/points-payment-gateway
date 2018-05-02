@@ -38,7 +38,7 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Home', 'url' => ['/']],
             ['label' => 'Send points', 'url' => ['/site/send'], 'visible' => !Yii::$app->user->isGuest],
             ['label' => 'Personal account', 'url' => ['/user/view', 'id' => Yii::$app->user->id], 'visible' => !Yii::$app->user->isGuest],
             Yii::$app->user->isGuest ? (

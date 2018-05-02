@@ -4,21 +4,15 @@ class LoginFormCest
 {
     public function _before(\FunctionalTester $I)
     {
+        Yii::$app->user->logout();
         $I->amOnRoute('site/login');
     }
 
     public function openLoginPage(\FunctionalTester $I)
     {
         $I->see('Login', 'h1');
-
-    }
-
-    // demonstrates `amLoggedInAs` method
-    public function internalLoginById(\FunctionalTester $I)
-    {
-        $I->amLoggedInAs(100);
-        $I->amOnPage('/');
-        $I->see('Logout (admin)');
+        $I->cantSee('Send points', 'li');
+        $I->cantSee('Personal account', 'li');
     }
 
     // demonstrates `amLoggedInAs` method
@@ -26,7 +20,9 @@ class LoginFormCest
     {
         $I->amLoggedInAs(\app\models\User::findOrCreateByUsername('admin'));
         $I->amOnPage('/');
-        $I->see('Logout (admin)');
+        $I->see('Logout (admin)', 'li');
+        $I->see('Send points', 'li');
+        $I->see('Personal account', 'li');
     }
 
     public function loginWithEmptyCredentials(\FunctionalTester $I)
@@ -34,24 +30,12 @@ class LoginFormCest
         $I->submitForm('#login-form', []);
         $I->expectTo('see validations errors');
         $I->see('Username cannot be blank.');
-        $I->see('Password cannot be blank.');
-    }
-
-    public function loginWithWrongCredentials(\FunctionalTester $I)
-    {
-        $I->submitForm('#login-form', [
-            'LoginForm[username]' => 'admin',
-            'LoginForm[password]' => 'wrong',
-        ]);
-        $I->expectTo('see validations errors');
-        $I->see('Incorrect username or password.');
     }
 
     public function loginSuccessfully(\FunctionalTester $I)
     {
         $I->submitForm('#login-form', [
             'LoginForm[username]' => 'admin',
-            'LoginForm[password]' => 'admin',
         ]);
         $I->see('Logout (admin)');
         $I->dontSeeElement('form#login-form');              

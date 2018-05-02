@@ -13,39 +13,33 @@ class LoginFormTest extends \Codeception\Test\Unit
         \Yii::$app->user->logout();
     }
 
+    /**
+     * Test creating user, in case if we login under not existing name
+     */
     public function testLoginNoUser()
     {
         $this->model = new LoginForm([
             'username' => 'not_existing_username',
-            'password' => 'not_existing_password',
-        ]);
-
-        expect_not($this->model->login());
-        expect_that(\Yii::$app->user->isGuest);
-    }
-
-    public function testLoginWrongPassword()
-    {
-        $this->model = new LoginForm([
-            'username' => 'demo',
-            'password' => 'wrong_password',
-        ]);
-
-        expect_not($this->model->login());
-        expect_that(\Yii::$app->user->isGuest);
-        expect($this->model->errors)->hasKey('password');
-    }
-
-    public function testLoginCorrect()
-    {
-        $this->model = new LoginForm([
-            'username' => 'demo',
-            'password' => 'demo',
         ]);
 
         expect_that($this->model->login());
         expect_not(\Yii::$app->user->isGuest);
-        expect($this->model->errors)->hasntKey('password');
+        expect(\Yii::$app->user->getIdentity()->name)->equals('not_existing_username');
+        expect("balance for new user", \Yii::$app->user->getIdentity()->balance)->equals(0);
+    }
+
+    /**
+     * Test form validation
+     */
+    public function testNoLoginWithNoUserName()
+    {
+        $this->model = new LoginForm([
+            'username' => '',
+        ]);
+
+        expect_not($this->model->login());
+        expect_that(\Yii::$app->user->isGuest);
+        expect($this->model->errors)->hasKey('username');
     }
 
 }
