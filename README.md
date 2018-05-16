@@ -6,6 +6,8 @@
     <br>
 </p>
 
+### [look demo app](http://points-payment-gateway.kvushco.xyz/)
+
 Test task for the implementation of a simple system of translations of conventional units between users
 based on Yii 2 Basic Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) 
 
@@ -16,6 +18,7 @@ For authorized users:
 The user can transfer any positive amount to another user (identification by nickname). In this case, the user's balance is reduced by the specified amount. The balance can be negative. The balance can not become less than -1000. The balance for all new users is 0 by default. You can transfer any amount (with two decimal places for cents) to any nickname, even fictitious, if such a nickname does not exist in the database, then we create this user automatically and credit the transfer amount. The user can not make the transfer himself.
 
 Users can see all translations related to their balance in their office in the form of a translation history.
+
 
 REQUIREMENTS
 ------------
